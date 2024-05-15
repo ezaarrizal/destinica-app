@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -18,7 +19,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/article', [ArticleController::class,'index']);
+
 
 
 Route::get('/loginpage', function () {
@@ -29,6 +30,25 @@ Route::get('/registerpage', function () {
     return Inertia::render("RegisterForm");
 });
 
+//Destination
+Route::get('/upload', function () {
+    return Inertia::render("Upload");
+});
+Route::post('/destupload', [DestinationController::class,'store']);
+Route::get('/destination', function () {
+    return Inertia::render("destinasi");
+});
+Route::get('/destination', [DestinationController::class,'index']);
+
+//Article
+Route::get('/artupload', function () {
+    return Inertia::render("ArticleUpload");
+});
+Route::get('/articles', function () {
+    return Inertia::render("ArticlePage");
+});
+Route::post('/articleupload', [ArticleController::class,'store']);
+Route::get('/articles', [ArticleController::class,'index']);
 
 
 Route::get('/welcome', function () {
