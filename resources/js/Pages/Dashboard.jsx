@@ -1,4 +1,4 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+/*import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
 export default function Dashboard({ auth }) {
@@ -9,13 +9,51 @@ export default function Dashboard({ auth }) {
         >
             <Head title="Dashboard" />
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">You're logged in!</div>
-                    </div>
-                </div>
-            </div>
+           
+        </AuthenticatedLayout>
+    );
+}*/
+
+import { useState } from 'react';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head } from '@inertiajs/react';
+import tes1 from '/resources/image/article1.jpg';
+import tes2 from '/resources/image/dest1.jpg';
+import tes3 from '/resources/image/dest3.jpg';
+import { FaCircleArrowRight } from "react-icons/fa6";
+
+export default function Dashboard({ auth }) {
+    const images = [tes1, tes2, tes3];
+    const [backgroundImage, setBackgroundImage] = useState(images[0]);
+
+    const changeBackground = () => {
+        const currentIndex = images.indexOf(backgroundImage);
+        const nextIndex = (currentIndex + 1) % images.length;
+        setBackgroundImage(images[nextIndex]);
+    };
+
+    return (
+        <AuthenticatedLayout
+            user={auth.user}
+            style={{
+                backgroundImage: `url(${backgroundImage})`,
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+            }}
+        >
+            <Head title="Dashboard" />
+            <button
+                onClick={changeBackground}
+                className="fixed bottom-9 right-9 text-white hover:text-gray-300 focus:outline-none p-2"
+            >
+                <FaCircleArrowRight className="h-9 w-9" />
+            </button>
         </AuthenticatedLayout>
     );
 }
+
+
+
+
+

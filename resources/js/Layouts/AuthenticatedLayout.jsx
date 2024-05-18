@@ -4,25 +4,32 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
+import DestLogo from '/resources/image/logo.png';
 
-export default function Authenticated({ user, header, children }) {
+export default function Authenticated({ user, header, children, style }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <nav className="bg-white border-b border-gray-100">
+        <div className="min-h-screen bg-gray-100" style={style}>
+            <nav className="bg-black border-b border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
-                                <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
+                                <Link href="/dashboard">
+                                    <img src={DestLogo} className="block h-9 w-auto" />                                
                                 </Link>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
+                                <NavLink href={route('dashboard')} active={route().current('dashboard')} className='text-white'>
                                     Dashboard
+                                </NavLink>
+                                <NavLink href={route('articles')} active={route().current('articles')} className='text-white'>
+                                    Articles
+                                </NavLink>
+                                <NavLink href={route('destination')} active={route().current('destination')} className='text-white'>
+                                    Destination
                                 </NavLink>
                             </div>
                         </div>
@@ -34,7 +41,7 @@ export default function Authenticated({ user, header, children }) {
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm text-white leading-4 font-medium rounded-md text-gray-500 bg-black hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                             >
                                                 {user.name}
 
@@ -55,7 +62,7 @@ export default function Authenticated({ user, header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
+                                        <Dropdown.Link href={route('profile.edit')} >Profile</Dropdown.Link>
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Log Out
                                         </Dropdown.Link>
@@ -92,8 +99,14 @@ export default function Authenticated({ user, header, children }) {
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')} className='text-white'>
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('articles')} active={route().current('articles')} className='text-white'>
+                            Articles
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('destination')} active={route().current('destination')} className='text-white'>
+                            Destination
                         </ResponsiveNavLink>
                     </div>
 
@@ -123,3 +136,4 @@ export default function Authenticated({ user, header, children }) {
         </div>
     );
 }
+

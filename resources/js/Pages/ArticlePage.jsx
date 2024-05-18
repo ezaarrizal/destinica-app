@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { Link, Head, useForm, router, usePage } from '@inertiajs/react';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PopupDelete from './PopupDelete';
 
 const ArticleUpload = (props) => {
@@ -33,7 +34,8 @@ const ArticleUpload = (props) => {
 
 
     return (
-        <div>
+        <AuthenticatedLayout user={props.auth.user} >
+            <Head title="Articles" />
             <div className="flex w-full h-fit bg-ijo text-white align flex-col">
                 <div className="flex">
                     <h3 className="w-3/4 text-4xl font-black mx-20 pt-10"><strong>ARTICLE OF THE WEEK</strong></h3>
@@ -46,8 +48,7 @@ const ArticleUpload = (props) => {
                     return (
                         <div key={i} className="flex h-3/6  mt-20 content-center">
                             <div className="w-5/12">
-                                <img src={data.gambar}
-                                    className='my-auto mx-20 h-5/6 rounded-md drop-shadow-md object-center' />
+                                <img src={data.gambar} className='my-auto mx-20 h-5/6 rounded-md drop-shadow-md object-center' />
                             </div>
                             <div className="w-1/2">
                                 <div className="relative flex justify-between items-center">
@@ -100,10 +101,9 @@ const ArticleUpload = (props) => {
                         </div>
                     );
                 }) : ""}
-
             </div>
-        </div>
-    )
+        </AuthenticatedLayout>
+    );
 }
 
-export default ArticleUpload
+export default ArticleUpload;

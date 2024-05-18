@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef } from 'react';
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { Link, Head, useForm, router, usePage } from '@inertiajs/react';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 const ArticleUpload = (props) => {
     const { flash } = usePage().props;
@@ -11,12 +12,12 @@ const ArticleUpload = (props) => {
         isi_artikel: "",
         author: null,
         gambar: ""
-    })
+    });
 
     const fileInputRef = useRef(null);
 
     const handleFileChange = (e) => {
-        setData('gambar', e .target.files[0]);
+        setData('gambar', e.target.files[0]);
     };
 
     const handleFileClick = () => {
@@ -31,7 +32,7 @@ const ArticleUpload = (props) => {
         formData.append('isi_artikel', data.isi_artikel);
         formData.append('gambar', data.gambar);
 
-        router.post("/articleupload", data, {
+        router.post("/articleupload", formData, {
             onSuccess: () => {
                 reset();
             },
@@ -39,7 +40,11 @@ const ArticleUpload = (props) => {
     };
 
     return (
-        <div>
+        <AuthenticatedLayout
+            user={props.auth.user} // Ensure 'user' is part of the props
+            style={{ backgroundColor: 'lightblue' }} // Optional: Add custom styles if needed
+        >
+            <Head title="Article Upload" />
             <div className="flex w-full h-screen bg-ijo text-white align">
                 <div className="w-1/2 h-1/1 bg-black-200 m-auto">
                     <h1 className="header-title w-auto text-left -mt-5 mb-5 ml-28 text-4xl text-white font-bold">Share your thoughts</h1>
@@ -60,28 +65,42 @@ const ArticleUpload = (props) => {
                     </div>
                 </div>
                 <form className="w-1/2  m-auto" onSubmit={storeArticle}>
-                    <div class="input-box">
+                    <div className="input-box">
                         {flash.message && (
                             <div className="rounded-md bg-white text-center text-black w-5/6 h-2/5">
                                 {flash.message}
                             </div>
                         )}
                         <h1>Title of your Review</h1>
-                        <input type="text" id="title-form" name="judul_artikel" className="rounded-md mt-1 w-5/6 bg-card-bg"
+                        <input
+                            type="text"
+                            id="title-form"
+                            name="judul_artikel"
+                            className="rounded-md mt-1 w-5/6 bg-card-bg"
                             onChange={(e) => setData('judul_artikel', e.target.value)}
-                            value={data.judul_artikel} />
+                            value={data.judul_artikel}
+                        />
 
                         <h1 className="mt-3">What Do You Think?</h1>
-                        <textarea id="description-form" name="isi_artikel" className="rounded-md mt-1 w-5/6 h-60 bg-card-bg placeholder:text-tiara" placeholder='Say something and explain how your best memories were made at that place'
+                        <textarea
+                            id="description-form"
+                            name="isi_artikel"
+                            className="rounded-md mt-1 w-5/6 h-60 bg-card-bg placeholder:text-tiara"
+                            placeholder='Say something and explain how your best memories were made at that place'
                             onChange={(e) => setData('isi_artikel', e.target.value)}
-                            value={data.isi_artikel}></textarea>
+                            value={data.isi_artikel}
+                        ></textarea>
                     </div>
-                    <button type="submit" className="font-bold w-1/5 text-black bg-warnabutton hover:bg-warnabutton focus:ring-4 focus:ring-blue-300 rounded-lg text-md px-5 py-2.5 me-2 mb-2 focus:outline-none mt-8"
-                    >Share</button>
+                    <button
+                        type="submit"
+                        className="font-bold w-1/5 text-black bg-warnabutton hover:bg-warnabutton focus:ring-4 focus:ring-blue-300 rounded-lg text-md px-5 py-2.5 me-2 mb-2 focus:outline-none mt-8"
+                    >
+                        Share
+                    </button>
                 </form>
             </div>
-        </div>
-    )
-}
+        </AuthenticatedLayout>
+    );
+};
 
-export default ArticleUpload
+export default ArticleUpload;

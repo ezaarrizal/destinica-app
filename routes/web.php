@@ -20,26 +20,29 @@ use Inertia\Inertia;
 */
 
 
-
-
-Route::get('/loginpage', function () {
-    return Inertia::render("LoginPage");
+Route::get('/login', function () {
+    return Inertia::render("Login");
 });
 
-Route::get('/registerpage', function () {
-    return Inertia::render("RegisterForm");
+Route::get('/register', function () {
+    return Inertia::render("Register");
 });
+
+
 
 //Destination
 Route::get('/upload', function () {
     return Inertia::render("Upload");
-});
+})->middleware(['auth', 'verified'])->name('upload');
+;
 Route::post('/destupload', [DestinationController::class,'store']);
 Route::get('/destinations', [DestinationController::class,'index'])->name('destination.index');
 
 Route::get('/destination', function () {
     return Inertia::render("destinasi");
-});
+})->middleware(['auth', 'verified'])->name('destination');
+
+Route::get('/destination', [DestinationController::class,'index']);
 Route::get('/destinations/{destination}', [DestinationController::class, 'show'])->name('destination.show');
 Route::get('/destinations/edit/{destination}', [DestinationController::class,'edit']);
 Route::put('/destinations/edit/{destination}', [DestinationController::class,'update']);
@@ -50,7 +53,8 @@ Route::get('/artupload', function () {
 });
 Route::get('/articles', function () {
     return Inertia::render("ArticlePage");
-});
+})->middleware(['auth', 'verified'])->name('articles');
+
 
 Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
 
@@ -78,6 +82,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/articles', [ArticleController::class, 'index'])->name('articles');
+    Route::get('/destination', [DestinationController::class, 'index'])->name('destination');
 });
 
 require __DIR__.'/auth.php';

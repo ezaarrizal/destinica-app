@@ -98,7 +98,7 @@ class ArticleController extends Controller
 
         $article->update($data);
 
-        return redirect()->route('article.index')->with('message', "Data Berhasil diupdate");
+        return redirect()->route('articles')->with('message', "Data Berhasil diupdate");
     }
 
     /**

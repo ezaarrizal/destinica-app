@@ -1,19 +1,18 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef } from 'react';
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { Link, Head, useForm, router, usePage } from '@inertiajs/react';
-
+import Authenticated from '@/Layouts/AuthenticatedLayout'; // Adjust the import path as necessary
 
 const Upload = () => {
-    const {flash} = usePage().props;
-    console.log(flash.message);
+    const { flash, auth } = usePage().props; // Assuming 'auth' contains the user data
 
-    const {data, setData, reset} = useForm({
+    const { data, setData, reset } = useForm({
         nama_destinasi: "",
         deskripsi: "",
         lokasi: "",
         gambar: null,
         tanggal: ""
-    })
+    });
 
     const fileInputRef = useRef(null);
 
@@ -25,7 +24,7 @@ const Upload = () => {
         fileInputRef.current.click();
     };
 
-    const storeDest = (e) =>{
+    const storeDest = (e) => {
         e.preventDefault();
 
         const formData = new FormData();
@@ -43,7 +42,8 @@ const Upload = () => {
     };
 
     return (
-        <div>
+        <Authenticated user={auth.user}>
+            <Head title="Upload" />
             <div className="flex w-full h-screen bg-ijo text-white align">
                 <div className="w-1/2 h-1/1 bg-black-200 m-auto">
                     <h1 className="header-title w-auto text-left -mt-5 mb-5 ml-28 text-4xl text-white font-bold">Want to share your moments?</h1>
@@ -63,44 +63,43 @@ const Upload = () => {
                         </div>
                     </div>
                 </div>
-                <form className="w-1/2  m-auto" onSubmit={storeDest}>
-                        <div class="input-box">
-                            {flash.message &&(
-                                <div className="rounded-md bg-white text-center text-black w-5/6 h-2/5">
-                                    {flash.message}
-                                </div>
-                            )}
-                            <h1>Title of your Review</h1>
-                            <input type="text" id="title-form" name="nama_destinasi" className="rounded-md mt-1 w-5/6 bg-card-bg"
-                            onChange={(e)=>setData('nama_destinasi', e.target.value)}
-                            value={data.nama_destinasi}/>
+                <form className="w-1/2 m-auto" onSubmit={storeDest}>
+                    <div className="input-box">
+                        {flash.message && (
+                            <div className="rounded-md bg-white text-center text-black w-5/6 h-2/5">
+                                {flash.message}
+                            </div>
+                        )}
+                        <h1>Title of your Review</h1>
+                        <input type="text" id="title-form" name="nama_destinasi" className="rounded-md mt-1 w-5/6 bg-card-bg"
+                            onChange={(e) => setData('nama_destinasi', e.target.value)}
+                            value={data.nama_destinasi} />
 
-                            <h1 className="mt-3">What Do You Think?</h1>
-                            <textarea id="description-form" name="description" className="rounded-md mt-1 w-5/6 h-24 bg-card-bg placeholder:text-tiara" placeholder='Say something and explain how your best memories were made at that place'
-                            onChange={(e)=>setData('deskripsi', e.target.value)}
+                        <h1 className="mt-3">What Do You Think?</h1>
+                        <textarea id="description-form" name="description" className="rounded-md mt-1 w-5/6 h-24 bg-card-bg placeholder:text-tiara" placeholder='Say something and explain how your best memories were made at that place'
+                            onChange={(e) => setData('deskripsi', e.target.value)}
                             value={data.deskripsi}></textarea>
 
-                            <div className="flex flex-row">
-                                <div className="basis-1/2">
-                                    <h1 className="mt-2">Location</h1>
-                                    <input type="text" id="location-form" name="location" className="rounded-md mt-1 w-5/6 bg-card-bg flex placeholder:text-tiara" placeholder='Enter review location'
-                                    onChange={(e)=>setData('lokasi', e.target.value)}
-                                    value={data.lokasi}/>
-                                </div>
-                                <div className="basis-1/2">
-                                    <h1 className="mt-3">When Did You Visit?</h1>
-                                    <input type="date" id="day" name="day" className="rounded-md mt-1 w-64 bg-card-bg text-tiara"
-                                    onChange={(e)=>setData('tanggal', e.target.value)}
-                                    value={data.tanggal}/>
-                                </div>
+                        <div className="flex flex-row">
+                            <div className="basis-1/2">
+                                <h1 className="mt-2">Location</h1>
+                                <input type="text" id="location-form" name="location" className="rounded-md mt-1 w-5/6 bg-card-bg flex placeholder:text-tiara" placeholder='Enter review location'
+                                    onChange={(e) => setData('lokasi', e.target.value)}
+                                    value={data.lokasi} />
+                            </div>
+                            <div className="basis-1/2">
+                                <h1 className="mt-3">When Did You Visit?</h1>
+                                <input type="date" id="day" name="day" className="rounded-md mt-1 w-64 bg-card-bg text-tiara"
+                                    onChange={(e) => setData('tanggal', e.target.value)}
+                                    value={data.tanggal} />
                             </div>
                         </div>
-                        <button type="submit" className="font-bold w-1/5 text-black bg-warnabutton hover:bg-warnabutton focus:ring-4 focus:ring-blue-300 rounded-lg text-md px-5 py-2.5 me-2 mb-2 focus:outline-none mt-8"
-                           >Yes, I want to!</button>
+                    </div>
+                    <button type="submit" className="font-bold w-1/5 text-black bg-warnabutton hover:bg-warnabutton focus:ring-4 focus:ring-blue-300 rounded-lg text-md px-5 py-2.5 me-2 mb-2 focus:outline-none mt-8">Yes, I want to!</button>
                 </form>
             </div>
-        </div>
-    )
+        </Authenticated>
+    );
 }
 
-export default Upload
+export default Upload;

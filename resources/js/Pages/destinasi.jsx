@@ -1,10 +1,11 @@
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'; // Make sure this path is correct
+
 import React, { useState } from 'react'
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { Link, Head, useForm, router, usePage } from '@inertiajs/react';
 import PopupDelete from './PopupDelete';
 import { MdDateRange } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
-
 
 const Destinasi = (props) => {
     const [activeDropdown, setActiveDropdown] = useState(null);
@@ -36,7 +37,12 @@ const Destinasi = (props) => {
 
 
     return (
-        <div>
+        <AuthenticatedLayout
+            user={props.auth.user} // Assuming 'user' is part of the props
+            style={{ backgroundColor: 'lightblue' }} // Optional: you can add custom styles here
+        >
+            <Head title="Destination" />
+            <div>
             <div className="flex w-full h-fit bg-ijo text-white align flex-col">
                 <div className="flex">
                     <h3 className="w-3/4 text-4xl font-black mx-20 pt-10"><strong>DESTINATION</strong></h3>
@@ -114,7 +120,10 @@ const Destinasi = (props) => {
 
             </div>
         </div>
-    )
+        </AuthenticatedLayout>
+    );
 }
+
+
 
 export default Destinasi
