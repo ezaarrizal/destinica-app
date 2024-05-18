@@ -15,8 +15,13 @@ class DestinationController extends Controller
      */
     public function index()
     {
-        return Inertia::render('destinasi',[
-            'articles' => Destination::get()
+        $destinations = Destination::select('id', 'nama_destinasi', 'deskripsi', 'lokasi', 'tanggal', 'gambar')->get()->map(function ($destination) {
+            $destination->deskripsi = substr($destination->deskripsi, 0, 100) . (strlen($destination->deskripsi) > 100 ? '...' : '');
+            return $destination;
+        });
+
+        return Inertia::render('destinasi', [
+            'destinations' => $destinations
         ]);
     }
 
@@ -41,6 +46,7 @@ class DestinationController extends Controller
             "gambar"=> "required|image|mimes:png,jpg,jpeg|max:2048",
         ]);
 
+
         if ($request->hasFile('gambar')) {
             $gambarPath = $request->file('gambar')->store('public/images');
         }
@@ -62,7 +68,9 @@ class DestinationController extends Controller
      */
     public function show(Destination $destination)
     {
-        //
+        return Inertia::render('detDestination', [
+            'destination' => $destination
+        ]);
     }
 
     /**
@@ -70,7 +78,9 @@ class DestinationController extends Controller
      */
     public function edit(Destination $destination)
     {
-        //
+        return Inertia::render("editDestination",[
+            "destination"=> $destination
+        ]);
     }
 
     /**
@@ -78,7 +88,24 @@ class DestinationController extends Controller
      */
     public function update(Request $request, Destination $destination)
     {
-        //
+        $data = $request->validate([
+            "nama_destinasi" => "nullable|string|max:255",
+            "deskripsi" => "nullable|string",
+            "lokasi"=> "nullable|string|max:255",
+            "tanggal"=> "nullable|date",
+            "gambar" => "nullable|image|mimes:png,jpg,jpeg|max:2048",
+        ]);
+
+        if ($request->hasFile('gambar')) {
+            $gambarPath = $request->file('gambar')->store('public/images');
+            $data['gambar'] = Storage::url($gambarPath);
+        } elseif ($request->input('gambar_existing')) {
+            $data['gambar'] = $request->input('gambar_existing');
+        }
+
+        $destination->update($data);
+
+        return redirect()->route('destination.index')->with('message', "Data Berhasil diupdate");
     }
 
     /**

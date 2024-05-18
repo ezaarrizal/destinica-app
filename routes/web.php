@@ -35,10 +35,14 @@ Route::get('/upload', function () {
     return Inertia::render("Upload");
 });
 Route::post('/destupload', [DestinationController::class,'store']);
+Route::get('/destinations', [DestinationController::class,'index'])->name('destination.index');
+
 Route::get('/destination', function () {
     return Inertia::render("destinasi");
 });
-Route::get('/destination', [DestinationController::class,'index']);
+Route::get('/destinations/{destination}', [DestinationController::class, 'show'])->name('destination.show');
+Route::get('/destinations/edit/{destination}', [DestinationController::class,'edit']);
+Route::put('/destinations/edit/{destination}', [DestinationController::class,'update']);
 
 //Article
 Route::get('/artupload', function () {

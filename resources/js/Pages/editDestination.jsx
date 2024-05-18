@@ -3,16 +3,16 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import { Link, Head, useForm, router, usePage } from '@inertiajs/react';
 
 
-const Upload = () => {
+const editDestination = ({destination}) => {
     const {flash} = usePage().props;
     console.log(flash.message);
 
-    const {data, setData, reset} = useForm({
-        nama_destinasi: "",
-        deskripsi: "",
-        lokasi: "",
+    const {data, setData} = useForm({
+        nama_destinasi: destination.nama_destinasi,
+        deskripsi: destination.deskripsi,
+        lokasi: destination.lokasi,
         gambar: null,
-        tanggal: ""
+        tanggal: destination.tanggal
     })
 
     const fileInputRef = useRef(null);
@@ -25,22 +25,42 @@ const Upload = () => {
         fileInputRef.current.click();
     };
 
-    const storeDest = (e) =>{
+    const handleUpdate = (e) => {
         e.preventDefault();
-
         const formData = new FormData();
-        formData.append('nama_destinasi', data.nama_destinasi);
-        formData.append('deskripsi', data.deskripsi);
-        formData.append('lokasi', data.lokasi);
-        formData.append('gambar', data.gambar);
-        formData.append('tanggal', data.tanggal);
+        formData.append('_method', 'PUT');
+        if (data.nama_destinasi !== destination.nama_destinasi) {
+            formData.append('nama_destinasi', data.nama_destinasi);
+        }
+        if (data.deskripsi !== destination.deskripsi) {
+            formData.append('deskripsi', data.deskripsi);
+        }
+        if (data.lokasi !== destination.lokasi) {
+            formData.append('lokasi', data.lokasi);
+        }
+        if (data.tanggal !== destination.tanggal) {
+            formData.append('tanggal', data.tanggal);
+        }
+        if (data.gambar) {
+            formData.append('gambar', data.gambar);
+        } else {
+            formData.append('gambar_existing', destination.gambar);
+        }
 
-        router.post("/destupload", data, {
-            onSuccess: () => {
-                reset();
-            },
+        router.post(`/destinations/edit/${destination.id}`, formData, {
+            forceFormData: true,
+            onFinish: () => {
+                setData({
+                    nama_destinasi: destination.nama_destinasi,
+                    deskripsi: destination.deskripsi,
+                    lokasi: destination.lokasi,
+                    tanggal: destination.tanggal,
+                    gambar: null,
+                });
+            }
         });
-    };
+    }
+
 
     return (
         <div>
@@ -63,7 +83,7 @@ const Upload = () => {
                         </div>
                     </div>
                 </div>
-                <form className="w-1/2  m-auto" onSubmit={storeDest}>
+                <form className="w-1/2  m-auto" onSubmit={handleUpdate}>
                         <div class="input-box">
                             {flash.message &&(
                                 <div className="rounded-md bg-white text-center text-black w-5/6 h-2/5">
@@ -103,4 +123,4 @@ const Upload = () => {
     )
 }
 
-export default Upload
+export default editDestination
