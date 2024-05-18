@@ -28,9 +28,6 @@ export default function Authenticated({ user, header, children, style }) {
                                 <NavLink href={route('articles')} active={route().current('articles')} className='text-white'>
                                     Articles
                                 </NavLink>
-                                <NavLink href={route('upload')} active={route().current('upload')} className='text-white'>
-                                    Upload
-                                </NavLink>
                                 <NavLink href={route('destination')} active={route().current('destination')} className='text-white'>
                                     Destination
                                 </NavLink>
@@ -107,9 +104,6 @@ export default function Authenticated({ user, header, children, style }) {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('articles')} active={route().current('articles')} className='text-white'>
                             Articles
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('upload')} active={route().current('upload')} className='text-white'>
-                            Upload
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('destination')} active={route().current('destination')} className='text-white'>
                             Destination

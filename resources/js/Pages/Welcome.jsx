@@ -18,14 +18,14 @@ export default function Welcome({ auth }) {
                         <>
                             <Link
                                 href={route('login')}
-                                className="font-bold text-white hover:text-white-900 dark:text-white dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+                                className="font-bold text-lg text-white hover:text-white-900 dark:text-white dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
                             >
-                                Log in
+                                Login
                             </Link>
 
                             <Link
                                 href={route('register')}
-                                className="ms-4 font-bold text-white hover:text-white dark:text-white dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+                                className="ms-4 font-bold text-lg text-white hover:text-white dark:text-white dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
                             >
                                 Register
                             </Link>

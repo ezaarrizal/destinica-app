@@ -50,8 +50,14 @@ Route::get('/articles', function () {
     return Inertia::render("ArticlePage");
 })->middleware(['auth', 'verified'])->name('articles');
 
+
+Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
+
 Route::post('/articleupload', [ArticleController::class,'store']);
-Route::get('/articles', [ArticleController::class,'index']);
+Route::get('/articles', [ArticleController::class,'index'])->name('article.index');
+Route::get('/articles/edit/{article}', [ArticleController::class,'edit']);
+Route::put('/articles/edit/{article}', [ArticleController::class,'update']);
+Route::delete('/articles/{id}/delete', [ArticleController::class, 'destroy'])->name('articles.destroy');
 
 
 Route::get('/welcome', function () {

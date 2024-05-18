@@ -32,7 +32,8 @@ export default {
             'card-bg': '#888B85',
             'warnabutton': '#D9D9D9',
             'button-hover': '#A29E9E',
-            'tiara': '#D5D5D5'
+            'tiara': '#D5D5D5',
+            'red': '#c1121f'
           },
           borderRadius: {
             'none': '0',
@@ -44,6 +45,20 @@ export default {
             'banyak' : '0.9rem',
             'full': '9999px',
             'large': '12px'
+          },
+          fontWeight: {
+            thin: '100',
+            hairline: '100',
+            extralight: '200',
+            light: '300',
+            normal: '400',
+            medium: '500',
+            semibold: '600',
+            bold: '700',
+            extrabold: '800',
+            'extra-bold': '800',
+            black: '900',
+            superbold: '1300'
           }
     },
 
