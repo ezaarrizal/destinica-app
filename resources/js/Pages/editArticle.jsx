@@ -2,41 +2,57 @@ import React, { useState, useRef } from 'react'
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { Link, Head, useForm, router, usePage } from '@inertiajs/react';
 
-const ArticleUpload = (props) => {
-    const { flash } = usePage().props;
-    console.log(flash.message);
+const editArticle = ({ article }) => {
+    const { flash, errors } = usePage().props;
 
-    const { data, setData, reset } = useForm({
-        judul_artikel: "",
-        isi_artikel: "",
+    const { data, setData } = useForm({
+        judul_artikel: article.judul_artikel,
+        isi_artikel: article.isi_artikel,
         author: null,
-        gambar: ""
+        gambar: null
     })
 
     const fileInputRef = useRef(null);
 
     const handleFileChange = (e) => {
-        setData('gambar', e .target.files[0]);
+        setData('gambar', e.target.files[0]);
     };
 
     const handleFileClick = () => {
         fileInputRef.current.click();
     };
 
-    const storeArticle = (e) => {
+    const handleUpdate = (e) => {
         e.preventDefault();
-
         const formData = new FormData();
-        formData.append('judul_artikel', data.judul_artikel);
-        formData.append('isi_artikel', data.isi_artikel);
-        formData.append('gambar', data.gambar);
+        formData.append('_method', 'PUT');
+        if (data.judul_artikel !== article.judul_artikel) {
+            formData.append('judul_artikel', data.judul_artikel);
+        }
+        if (data.isi_artikel !== article.isi_artikel) {
+            formData.append('isi_artikel', data.isi_artikel);
+        }
+        if (data.author !== article.author) {
+            formData.append('author', data.author);
+        }
+        if (data.gambar) {
+            formData.append('gambar', data.gambar);
+        } else {
+            formData.append('gambar_existing', article.gambar);
+        }
 
-        router.post("/articleupload", data, {
-            onSuccess: () => {
-                reset();
-            },
+        router.post(`/articles/edit/${article.id}`, formData, {
+            forceFormData: true,
+            onFinish: () => {
+                setData({
+                    judul_artikel: article.judul_artikel,
+                    isi_artikel: article.isi_artikel,
+                    author: article.author,
+                    gambar: null,
+                });
+            }
         });
-    };
+    }
 
     return (
         <div>
@@ -59,14 +75,14 @@ const ArticleUpload = (props) => {
                         </div>
                     </div>
                 </div>
-                <form className="w-1/2  m-auto" onSubmit={storeArticle}>
+                <form className="w-1/2  m-auto" onSubmit={handleUpdate}>
                     <div class="input-box">
                         {flash.message && (
                             <div className="rounded-md bg-white text-center text-black w-5/6 h-2/5">
                                 {flash.message}
                             </div>
                         )}
-                        <h1>Title of your Review</h1>
+                        <h1>Title of your Article</h1>
                         <input type="text" id="title-form" name="judul_artikel" className="rounded-md mt-1 w-5/6 bg-card-bg"
                             onChange={(e) => setData('judul_artikel', e.target.value)}
                             value={data.judul_artikel} />
@@ -77,11 +93,11 @@ const ArticleUpload = (props) => {
                             value={data.isi_artikel}></textarea>
                     </div>
                     <button type="submit" className="font-bold w-1/5 text-black bg-warnabutton hover:bg-warnabutton focus:ring-4 focus:ring-blue-300 rounded-lg text-md px-5 py-2.5 me-2 mb-2 focus:outline-none mt-8"
-                    >Share</button>
+                    >Update Article</button>
                 </form>
             </div>
         </div>
     )
 }
 
-export default ArticleUpload
+export default editArticle

@@ -14,8 +14,13 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return Inertia::render('ArticlePage',[
-            'articles' => Article::get()
+        $articles = Article::select('id', 'judul_artikel', 'isi_artikel', 'gambar')->get()->map(function ($article) {
+            $article->isi_artikel = substr($article->isi_artikel, 0, 100) . (strlen($article->isi_artikel) > 100 ? '...' : '');
+            return $article;
+        });
+
+        return Inertia::render('ArticlePage', [
+            'articles' => $articles
         ]);
     }
 
@@ -58,7 +63,9 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        //
+        return Inertia::render('Article', [
+            'article' => $article
+        ]);
     }
 
     /**
@@ -66,7 +73,9 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        //
+        return Inertia::render("editArticle",[
+            "article"=> $article
+        ]);
     }
 
     /**
@@ -74,7 +83,22 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        //
+        $data = $request->validate([
+            "judul_artikel" => "nullable|string|max:255",
+            "isi_artikel" => "nullable|string",
+            "gambar" => "nullable|image|mimes:png,jpg,jpeg|max:2048",
+        ]);
+
+        if ($request->hasFile('gambar')) {
+            $gambarPath = $request->file('gambar')->store('public/images');
+            $data['gambar'] = Storage::url($gambarPath);
+        } elseif ($request->input('gambar_existing')) {
+            $data['gambar'] = $request->input('gambar_existing');
+        }
+
+        $article->update($data);
+
+        return redirect()->route('article.index')->with('message', "Data Berhasil diupdate");
     }
 
     /**
@@ -82,6 +106,7 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+        $article->delete();
+        return response()->json("articles.destroy")->with("message","Data Berhasil Dihapus");
     }
 }
