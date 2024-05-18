@@ -1,19 +1,18 @@
 import React, { useState } from 'react'
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { Link, Head, useForm, router, usePage } from '@inertiajs/react';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 const ArticleUpload = (props) => {
-
     return (
-        <div>
+        <AuthenticatedLayout user={props.auth.user} >
             <div className="flex w-full h-fit bg-ijo text-white align flex-col">
                 <h1 className="text-4xl font-black mx-auto pt-10">ARTICLE OF THE WEEK</h1>
                 {props.articles ? props.articles.map((data, i) => {
                     return (
                         <div key={i} className="flex h-3/6  mt-20 content-center">
                             <div className="w-5/12">
-                                <img src={data.gambar}
-                                    className='my-auto mx-20 h-5/6 rounded-md drop-shadow-md object-center' />
+                                <img src={data.gambar} className='my-auto mx-20 h-5/6 rounded-md drop-shadow-md object-center' />
                             </div>
                             <div className="w-1/2">
                                 <h1 className="text-2xl font-bold">{data.judul_artikel}</h1>
@@ -25,10 +24,9 @@ const ArticleUpload = (props) => {
                         </div>
                     );
                 }) : ""}
-
             </div>
-        </div>
-    )
+        </AuthenticatedLayout>
+    );
 }
 
-export default ArticleUpload
+export default ArticleUpload;

@@ -7,4 +7,10 @@ use Illuminate\Http\Request;
 class UploadController extends Controller
 {
     //
+    public function index()
+    {
+        return Inertia::render('Upload',[
+            'upload' => Upload::get()
+        ]);
+    }
 }

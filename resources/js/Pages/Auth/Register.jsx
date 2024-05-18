@@ -99,12 +99,12 @@ export default function Register() {
                                 <InputError message={errors.password_confirmation} className="mt-2" />
                             </div>
 
-                            <PrimaryButton type='submit' className="w-full h-12 bg-black rounded-full shadow-md mt-8 text-lg font-semibold text-gray-800 flex items-center justify-center" disabled={processing}>
+                            <PrimaryButton type='submit' className="w-full h-12 bg-transparent rounded-full shadow-md mt-8 text-lg font-semibold text-black flex items-center justify-center" disabled={processing}>
                                 Register
                             </PrimaryButton>
 
                             <div className="register-link mt-8">
-                                <p>Already have an account?<Link to="/login" className="text-white font-semibold">Login</Link></p>
+                                <p>Already have an account?<a href={('login')} className="text-white font-semibold">Login</a></p>
                             </div>
                         </form>
                     </div>
@@ -113,7 +113,7 @@ export default function Register() {
         </div>
     );
 }
-
+/*
 import { useEffect } from 'react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
@@ -231,3 +231,4 @@ export default function Register() {
         </GuestLayout>
     );
 }
+*/
