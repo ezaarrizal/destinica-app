@@ -14,7 +14,7 @@ class LoginController extends Controller
     public function index()
     {
         return Inertia::render("Login",[
-            "title" => "tes 123"
+            "title" => "tes 123",
         ]);
     }
 

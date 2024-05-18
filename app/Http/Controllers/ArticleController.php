@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
@@ -13,10 +14,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = article::all();
-        return Inertia::render("Article",[
-            "title" => "tes 123",
-            "articles" => $articles,
+        return Inertia::render('ArticlePage',[
+            'articles' => Article::get()
         ]);
     }
 
@@ -33,7 +32,25 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            "judul_artikel" => "required",
+            "isi_artikel" => "required",
+            "gambar" => "required|image|mimes:png,jpg,jpeg|max:2048",
+        ]);
+
+        if ($request->hasFile('gambar')) {
+            $gambarPath = $request->file('gambar')->store('public/images');
+        }
+
+        $article = new Article();
+        $article->judul_artikel = $request->judul_artikel;
+        $article->isi_artikel = $request->isi_artikel;
+        $article->gambar = Storage::url($gambarPath);
+        $article->save();
+
+        //Article::create($data);
+
+        return back()->with("message","Berhasil Upload");
     }
 
     /**

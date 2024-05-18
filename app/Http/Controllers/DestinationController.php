@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Destination;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
+
 
 class DestinationController extends Controller
 {
@@ -12,7 +15,9 @@ class DestinationController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('destinasi',[
+            'articles' => Destination::get()
+        ]);
     }
 
     /**
@@ -20,7 +25,7 @@ class DestinationController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -28,7 +33,28 @@ class DestinationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            "nama_destinasi" => "required",
+            "deskripsi" => "required",
+            "lokasi"=> "required",
+            "tanggal"=> "required",
+            "gambar"=> "required|image|mimes:png,jpg,jpeg|max:2048",
+        ]);
+
+        if ($request->hasFile('gambar')) {
+            $gambarPath = $request->file('gambar')->store('public/images');
+        }
+
+        $destination = new Destination();
+        $destination->nama_destinasi = $request->nama_destinasi;
+        $destination->deskripsi = $request->deskripsi;
+        $destination->lokasi = $request->lokasi;
+        $destination->tanggal = $request->tanggal;
+        $destination->gambar = Storage::url($gambarPath);
+        $destination->save();
+
+
+        return back()->with("message","Berhasil Upload");
     }
 
     /**
